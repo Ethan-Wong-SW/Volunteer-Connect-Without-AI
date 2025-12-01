@@ -32,6 +32,4 @@ If u see\
  ✓ Starting...\
  ✓ Ready in ...ms\
 
-The app at localhost:3000 is now fully connected to your AI server at 127.0.0.1:8000.
-
-Go to http://localhost:3000/ to access the webpage 
+Go to http://localhost:5173/ to access the webpage 
