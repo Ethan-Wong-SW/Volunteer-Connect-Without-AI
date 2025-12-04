@@ -18,7 +18,7 @@ const normalizeFavoriteId = (value) => {
   return Number.isNaN(asNumber) ? value : asNumber;
 };
 
-const Opportunities = ({ profile = {}, onApply, onClearProfile }) => {
+const Opportunities = ({ profile = {}, onApply }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('all');
@@ -207,7 +207,6 @@ const filteredOpportunities = useMemo(() => {
     setSkillFilter('all');
     setInterestFilter('all');
     setDateRange({ start: '', end: '' });
-    if (onClearProfile) onClearProfile();
   };
 
   return (
@@ -294,7 +293,7 @@ const filteredOpportunities = useMemo(() => {
                 type="button" 
                 className="filter-clear-btn"
                 onClick={handleClearFilters}
-                title="Clear all filters and profile preferences"
+                title="Clear all filters"
             >
                 Clear Filters
             </button>

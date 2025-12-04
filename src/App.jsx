@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import OpportunitiesPage from './pages/Opportunities';
 import OpportunityDetailPage from './pages/id/OpportunityDetail';
 import OpportunityReviewsPage from './pages/id/OpportunityReviews';
-import ProfilePage from './pages/Profile';
 import FavouritesDetailPage from './pages/favorites/FavouritesDetail';
 import FavouriteReviewsPage from './pages/favorites/FavouriteReviews';
 
@@ -96,48 +95,6 @@ function App() {
     [profile.name],
   );
 
-  const handleProfileSave = useCallback(
-    (nextProfile) => {
-      setProfile(nextProfile);
-      window.alert('Profile saved!');
-    },
-    [],
-  );
-  const handleProfileTagsChange = useCallback((nextTags = {}) => {
-    setProfile((currentProfile) => {
-      const mergedInterests = Array.isArray(nextTags?.interests)
-        ? [...new Set(nextTags.interests)]
-        : currentProfile.interests || DEFAULT_PROFILE.interests;
-      const mergedSkills = Array.isArray(nextTags?.skills)
-        ? [...new Set(nextTags.skills)]
-        : currentProfile.skills || DEFAULT_PROFILE.skills;
-
-      return {
-        ...currentProfile,
-        interests: mergedInterests,
-        skills: mergedSkills,
-      };
-    });
-  }, []);
-  const handleQuizComplete = useCallback(
-    (newTags) => {
-      setProfile((currentProfile) => {
-        // Use Set to avoid duplicate tags
-        const combinedInterests = [...new Set([...(currentProfile.interests || []), ...newTags.interests])];
-        const combinedSkills = [...new Set([...(currentProfile.skills || []), ...newTags.skills])];
-        
-        return {
-          ...currentProfile,
-          interests: combinedInterests,
-          skills: combinedSkills,
-        };
-      });
-      // The useEffect for 'profile' will automatically save this to localStorage
-      window.alert('Profile updated with your new interests!');
-    },
-    [] // No dependencies, it uses the setProfile updater function
-  );
-
   const handleSignOut = useCallback(() => {
     setIsAuthenticated(false);
     navigate('/login', { replace: true });
@@ -158,7 +115,6 @@ function App() {
               profile={profile}
               onApply={handleApply}
               defaultProfile={DEFAULT_PROFILE}
-              onQuizComplete={handleQuizComplete} // <-- Pass the new handler
             />
           }
         />
@@ -169,7 +125,6 @@ function App() {
               profile={profile}
               onApply={handleApply}
               defaultProfile={DEFAULT_PROFILE}
-              onQuizComplete={handleQuizComplete}
             />
           }
         />
@@ -192,17 +147,6 @@ function App() {
         <Route
           path="/favorites/:id/reviews"
           element={<FavouriteReviewsPage />}
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProfilePage
-              profile={profile}
-              onSave={handleProfileSave}
-              onTagsChange={handleProfileTagsChange}
-              defaultProfile={DEFAULT_PROFILE}
-            />
-          }
         />
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />
@@ -230,7 +174,6 @@ function ProtectedLayout({ isAuthenticated, onSignOut }) {
 const navItems = [
   { key: 'discover', label: 'Discover', path: '/opportunities' },
   { key: 'favorites', label: 'Favourites', path: '/favorites' },
-  { key: 'profile', label: 'Profile', path: '/profile' },
 ];
 
 function Header({ onSignOut }) {
